@@ -6,8 +6,11 @@ import vuetify from './plugins/vuetify';
 import { GChart } from 'vue-google-charts'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import _ from 'lodash';
 
+Object.defineProperty(Vue.prototype, '$_', { value: _ });
 Vue.use(VueAxios, axios)
+axios.defaults.baseURL = 'http://localhost:8000/';
 Vue.config.productionTip = false
 
 new Vue({

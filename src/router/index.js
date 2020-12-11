@@ -5,6 +5,7 @@ import DashBoard from '../views/DashBoard.vue'
 import Division from '../views/Division.vue'
 import Position from '../views/Position.vue'
 import Employee from '../views/Employee.vue'
+import PositionEmpty from '../views/PositionEmpty.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -12,6 +13,11 @@ const routes = [
     path: '/',
     name: 'DashBoard',
     component: DashBoard
+  },
+  {
+    path: '/empty',
+    name: 'PositionEmpty',
+    component: PositionEmpty
   },
   {
     path: '/division',

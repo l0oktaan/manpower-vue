@@ -54,6 +54,7 @@ export default {
         drawer: true,
         items: [
           { title: 'Dashboard', icon: 'mdi-monitor-dashboard', route: '/' },
+          { title: 'ตำแหน่งว่าง', icon: 'mdi-account-clock', route: '/empty' },
           { title: 'ข้อมูลหน่วยงาน', icon: 'mdi-home-city', route: '/division' },
           { title: 'ข้อมูลตำแหน่ง', icon: 'mdi-chevron-triple-up', route: '/position' },
           { title: 'ข้อมูลข้าราชการ', icon: 'mdi-account-group', route: '/employee' },
