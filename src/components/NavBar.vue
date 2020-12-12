@@ -58,6 +58,7 @@ export default {
           { title: 'ข้อมูลหน่วยงาน', icon: 'mdi-home-city', route: '/division' },
           { title: 'ข้อมูลตำแหน่ง', icon: 'mdi-chevron-triple-up', route: '/position' },
           { title: 'ข้อมูลข้าราชการ', icon: 'mdi-account-group', route: '/employee' },
+          { title: 'เปลี่ยนแปลงข้อมูล', icon: 'fas fa-sync', route: '/change' },
         ],
         mini: false,
       }

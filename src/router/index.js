@@ -6,6 +6,7 @@ import Division from '../views/Division.vue'
 import Position from '../views/Position.vue'
 import Employee from '../views/Employee.vue'
 import PositionEmpty from '../views/PositionEmpty.vue'
+import Change from '../views/Change.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -37,6 +38,11 @@ const routes = [
     path: '/employee',
     name: 'Employee',
     component: Employee
+  },
+  {
+    path: '/change',
+    name: 'Change',
+    component: Change
   },
 ]
 

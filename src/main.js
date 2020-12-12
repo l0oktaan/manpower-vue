@@ -7,7 +7,8 @@ import { GChart } from 'vue-google-charts'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import _ from 'lodash';
-
+import VueFilter from 'vue-filter';
+Vue.use(VueFilter);
 Object.defineProperty(Vue.prototype, '$_', { value: _ });
 Vue.use(VueAxios, axios)
 axios.defaults.baseURL = 'http://localhost:8000/';
