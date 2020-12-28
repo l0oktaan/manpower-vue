@@ -13,8 +13,10 @@
       <v-container fluid >
         
         <!-- If using vue-router -->
+        <!-- <v-scroll-x-transition mode="in" hide-on-leave="true"> -->
+          <router-view></router-view>
+        <!-- </v-scroll-x-transition> -->
         
-        <router-view></router-view>
         
       </v-container>
     </v-main>
@@ -40,6 +42,8 @@ export default {
   data: () => ({
     //
   }),
+  
+  
 };
 </script>
 <style scoped>

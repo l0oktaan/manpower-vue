@@ -1,25 +1,59 @@
 <template>
   <v-container>
+      <v-row justify="start">
+          <v-col>
+              <v-card>
+                <v-tabs
+                    v-model="tab"
+                    background-color="white"
+                    start                
+                    icons-and-text
+                    grow
+                >
+                <v-tabs-slider></v-tabs-slider>
+                    <v-tab :href="'#tab-' + index" v-for="(tab,index) in my_tabs" :key="index">
+                        {{tab.name}}
+                        <v-icon>{{tab.icon}}</v-icon>
+                    </v-tab>
+                    
+                </v-tabs>
+                <v-tabs-items v-model="tab">
+                    <v-tab-item
+                                                
+                        value="tab-0"
+                    >
+                        <v-card flat>
+                            <edit-employee></edit-employee>
+                        </v-card>
+                    </v-tab-item>
+                    </v-tabs-items>
+                
+            </v-card>
+          </v-col>
+      </v-row>
       <v-row justify="end">
           <v-col md="4">
               
-              </v-col>
+            </v-col>
       </v-row>
-      <v-row>
-          <v-col>
-              
-                <!-- <div v-for="(item,index) in change_list" :key="index">{{index + 1 + '' + item.employee_name}}</div> -->
+      
+      <!-- <v-row>
+          <v-col>            
+                
+                
                 <v-progress-circular
                     indeterminate
                     color="primary"
                     v-if="loading"
                 ></v-progress-circular>
+                <v-slide-y-transition>
                 <v-data-table
                     :headers="headers"
                     :items="change_list"
                     :items-per-page="15"
                     :search = "search_change"
                     class="elevation-1"
+                    
                     v-if="change_list">
                     <template v-slot:top>
                         <v-toolbar
@@ -70,27 +104,50 @@
                         ma-2
                         >
                         <v-icon>mdi-pencil</v-icon>
-                    </v-btn>
-                    
+                    </v-btn>                    
                     
                 </template>
                 </v-data-table>
-            
+            </v-slide-y-transition>
           </v-col>
-      </v-row>
-      <v-row>
-          <v-col>{{change_list_link}}</v-col>
-      </v-row>
-      <v-row>
-          <v-col>{{change_list_page}}</v-col>
-      </v-row>
+      </v-row> -->
+      
   </v-container>
 </template>
 
 <script>
+
+import EditEmployee from '../components/Change/EditEmployee.vue';
 export default {
+    components: {
+        EditEmployee        
+    },
     data(){
         return {
+            tab: null,
+            my_tabs: [
+                {
+                    name : "เพิ่มข้อมูลข้าราชการ",
+                    icon : "fas fa-user-plus",
+                    component: "<add-employee></add-employee>"
+                },
+                {
+                    name : "โยกย้าย",
+                    icon : "fas fa-sync"
+                },
+                {
+                    name : "เลื่อนระดับ",
+                    icon : "mdi-stairs-up"
+                },
+                {
+                    name : "รักษาการในตำแหน่ง",
+                    icon : "fas fa-star-half-alt"
+                },
+                {
+                    name : "ออกจากกรมบัญชีกลาง",
+                    icon : "fas fa-sign-out-alt"
+                },
+            ],
             loading: true,
             search_change: '',
             change_list : this.$store.getters.change_list,
@@ -122,15 +179,21 @@ export default {
                 {text: 'ลาออก/ให้โอน', value : 5},
                 {text: 'ยกมา', value : 6},
                 {text: 'ให้ไปรักษาการ', value : 7}
-            ]
+            ],
+            change_edit_type: null
         }
     },
     async mounted(){
-        await this.fetchData();
+        // await this.fetchData();
     },
     methods: {
+        resetState(){
+            this.$store.dispatch('resetState');
+        },
         async fetchData(){
-            if (!this.change_type){
+            console.log('fetchData' + this.change_list ? 'true' : 'false');
+
+            if (!this.change_list){
                 await this.$store.dispatch('get_change');
                 this.loading = await false;
                 this.change_list = await this.$store.getters.change_list;
@@ -138,8 +201,7 @@ export default {
                 this.change_list_page = await this.$store.getters.change_list_page;
             }else{
                 this.loading = await false;
-            }
-            
+            }            
         },
         get_change_type(value){
             // return this.change_type[this.change_type.indexOf(x=>x.value == value)]['text'];
@@ -170,5 +232,11 @@ export default {
 }
 .v-text-field{
       width: 300px!important;
+}
+.v-tab{
+    color: rgb(54, 54, 54)!important;
+}
+.v-tab--active{
+    color: rgb(25, 46, 136)!important;
 }
 </style>

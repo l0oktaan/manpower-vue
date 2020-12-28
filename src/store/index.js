@@ -4,16 +4,22 @@ import axios from 'axios';
 Vue.use(Vuex)
 import VuexPersistence from 'vuex-persist'
 
-export default new Vuex.Store({
-  state: {
+const getDefaultState = () => {
+  return {
     empty_position : null,
     empty_position_name : null,
     //---------- Change List ------------
     change_list : null,
     change_list_link : null,
-    change_list_page : null
-  },
+    change_list_page : null,
+    prefix_list : null,
+    level_list : null,
+  }
+}
+export default new Vuex.Store({
+  state: getDefaultState(),
   plugins: [new VuexPersistence().plugin],
+  
   getters: {
     empty_position (state){
       return state.empty_position
@@ -33,8 +39,20 @@ export default new Vuex.Store({
     change_list_page (state){
       return state.change_list_page
     },
+    prefix_list (state){
+      return state.prefix_list
+    },
+    level_list (state){
+      // if (!state.level_list){
+      //   await state.dispatch('get_level_list')
+      // }
+      return state.level_list
+    },
   },
   mutations: {
+    resetState (state) {
+      Object.assign(state, getDefaultState())      
+    },
     empty_position (state, data){
       state.empty_position = data
     },
@@ -42,7 +60,7 @@ export default new Vuex.Store({
       state.empty_position_name = data
     },
     change_list (state, data){
-      console.log('response :' + data)
+      
       state.change_list = data
     },
     change_list_link (state, data){
@@ -50,10 +68,19 @@ export default new Vuex.Store({
     },
     change_list_page (state, data){
       state.change_list_page = data
+    },
+    prefix_list (state, data){
+      state.prefix_list = data
+    },
+    level_list (state, data){
+      state.level_list = data
     }
+    
   },
   actions: {
-    
+    resetState ({ commit }) {
+      commit('resetState')
+    },
     async get_empty_position ({commit}){
       let path = '/api/empty'
       let response = await axios.get(path)
@@ -70,6 +97,18 @@ export default new Vuex.Store({
       commit('change_list_link',response.data.links)
       commit('change_list_page',response.data.meta)
     },
+    async get_prefix_list ( {commit}){
+      let path = '/api/prefix'
+      let response = await axios.get(path)
+      
+      commit('prefix_list',response.data)
+    },
+    async get_level_list ( {commit}){
+      let path = '/api/level_hold'
+      let response = await axios.get(path)
+      
+      commit('level_list',response.data)
+    }
   },
   modules: {
   }

@@ -174,7 +174,7 @@ export default {
             loading: true,
             search: '',
             positions : [],
-            empty_position : [],//this.$store.getters.empty_position
+            empty_position : this.$store.getters.empty_position,
             position_list : [],
             position_name: this.$store.getters.empty_position_name, //'',
             arr_header_class: ['blue darken-3', 'white--text'],
@@ -195,33 +195,17 @@ export default {
     },
     watch : {
         async empty_position(){
-            let iposition = await _.groupBy(this.empty_position, 'name1');
-            
+            let iposition = await _.groupBy(this.empty_position, 'name1');            
             let arrPosition = [];
             await Object.keys(iposition).forEach(p => {
                 arrPosition.push({
                     name : p,
                     count : iposition[p].length
                 })
-            })
-            
+            })           
 
             this.positions = await _.orderBy(arrPosition,'count','desc');
-            // position.forEach(element => {
-            //     arrPosition.push({
-            //         name : element.key,
-            //         count : element.value.length
-            //     })
-            // });
-            // console.log(arrPosition);
-            // this.positions = arrPosition
-            // this.positions = _.groupBy(this.empty_position, 'name1');
-            // console.log(this.positions);
-            // this.positions = _.chain(this.empty_position)
-            //     .groupBy(x => x.name1)
-            //     .map((positions,name1)=> ({name1,positions}))
-            //     .orderBy(group => Number(group.name1.length),['asc'])
-            //     .value()
+            
         }
     },
     async beforeMount(){
@@ -239,9 +223,24 @@ export default {
         
         // this.$nextTick(()=>{
             // await this.$store.dispatch('get_empty_position');
-            await this.$store.dispatch('get_empty_position');
-            this.empty_position = await this.$store.getters.empty_position;
-            this.loading = await false;
+            if (!this.empty_position){
+                await this.$store.dispatch('get_empty_position');
+                this.empty_position = await this.$store.getters.empty_position;
+                this.loading = await false;
+            }else{
+                this.loading = false;
+            }
+            let iposition = await _.groupBy(this.empty_position, 'name1');            
+            let arrPosition = [];
+            await Object.keys(iposition).forEach(p => {
+                arrPosition.push({
+                    name : p,
+                    count : iposition[p].length
+                })
+            })           
+
+            this.positions = await _.orderBy(arrPosition,'count','desc');
+            
             
         // });
         

@@ -15,6 +15,14 @@ axios.defaults.baseURL = 'http://localhost:8000/';
 Vue.config.productionTip = false
 
 new Vue({
+  created() {
+      window.addEventListener('beforeunload', this.beforePageDestroyed)
+  },
+  methods: {
+    beforePageDestroyed: function () {
+        this.$store.dispatch('resetState');
+    }
+  },
   router,
   store,
   vuetify,
