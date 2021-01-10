@@ -207,12 +207,16 @@
                                                     mandatory
                                                     >
                                                     <v-radio
-                                                        label="บรรจุใหม่"
-                                                        value="1"
+                                                        label="บรรจุใหม่ (บัญชีกรม)"
+                                                        value="11"
+                                                    ></v-radio>
+                                                    <v-radio
+                                                        label="บรรจุใหม่ (บัญชีอื่น)"
+                                                        value="12"
                                                     ></v-radio>
                                                     <v-radio
                                                         label="รับโอน"
-                                                        value="2"
+                                                        value="13"
                                                     ></v-radio>
                                                 </v-radio-group>                                                
                                             </v-col>    
@@ -322,7 +326,8 @@
                                                     </v-date-picker>
                                                 </v-menu>
                                             </v-col>                                 
-                                            <v-col cols="4">                                                
+                                            <v-col cols="4">  
+                                                                                              
                                                 <validation-provider
                                                     v-slot="{ errors }"
                                                     name="level"
@@ -333,6 +338,7 @@
                                                     v-model="level"
                                                     :items="level_list"
                                                     item-text="name"
+                                                    item-value="id"
                                                     :error-messages="errors"
                                                     label="ระดับ"
                                                     data-vv-name="level"
@@ -394,6 +400,7 @@
                                         </v-slide-x-transition>
                                         <v-row justify="center">
                                             <v-col cols="12">
+                                                
                                                 <v-card 
                                                     elevation="0"
                                                 >
@@ -502,7 +509,7 @@ export default {
     },
     data(){
         return {
-            
+            change: null,
             dialog: false,
             filter: null,
             result_search: [],
@@ -649,8 +656,32 @@ export default {
                 if (employee){     
                         this.status = await employee.status;
                 }
+                if (this.switch1){
+                    console.log('employee :' + employee.id);
+                    console.log('type :' + this.add_type);
+                    console.log('position_id :' + this.position);
+                    console.log('level :' + this.level);
+                    console.log('command_no :' + this.command_no);
+                    console.log('command_date :' + this.command_date);
+                    
+                    path = await '/api/change';
+                    response = await axios.post(path,{
+                        "employee_id": employee.id,
+                        "type": this.add_type,
+                        "position_id": this.position,
+                        "level_hold_id": this.level,
+                        "command_no": this.command_no,
+                        "command_date": this.command_date,
+                        "status": 1                        
+                    })
+                    
+                    this.change = await response.data.data;
+                    if (this.change){
+                        console.log('changed');
+                    }
+                }
             } catch (error) {
-                console.log(error);
+                console.log('error' + error);
             }
             
             // this.dialog = false;
